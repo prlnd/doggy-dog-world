@@ -1,10 +1,4 @@
-import { type Breed, type TransformParams } from './schemas';
-
-export function closestNumber(target: number, values: number[]) {
-  return values.reduce((prev, curr) => {
-    return Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev;
-  });
-}
+import type { Breed, TransformParams } from './schemas';
 
 export function getFilters(breeds: Breed[]) {
   return {

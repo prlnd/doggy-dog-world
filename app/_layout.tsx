@@ -1,4 +1,4 @@
-import { MD3LightTheme as DefaultTheme, PaperProvider, Searchbar } from 'react-native-paper';
+import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 import { Stack } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StyleSheet, View } from 'react-native';
@@ -14,11 +14,21 @@ export default function RootLayout() {
           screenOptions={{
             header: () => (
               <View style={styles.header}>
-                <SearchInput placeholder="Search breeds" />
+                <SearchInput placeholder="Search dog breeds" />
               </View>
             ),
+            animation: 'slide_from_right',
+            animationDuration: 150,
           }}>
           <Stack.Screen name="index" options={{ title: 'Breeds' }} />
+          <Stack.Screen
+            name="[id]"
+            options={{
+              title: 'Breed Details',
+              headerShown: true,
+              header: undefined,
+            }}
+          />
         </Stack>
       </PaperProvider>
     </QueryClientProvider>

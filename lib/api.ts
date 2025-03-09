@@ -1,7 +1,13 @@
 import type { PageQueryParams } from './schemas';
-import { breedArraySchema, paginationSchema } from './schemas';
+import { breedArraySchema, imageSchema, paginationSchema } from './schemas';
 
 const BASE_URL = 'https://api.thedogapi.com/v1';
+
+function assertOkResponse(response: Response) {
+  if (!response.ok) {
+    throw new Error(`Request failed with status code ${response.status} ${response.statusText}`);
+  }
+}
 
 export async function getBreeds({ page, limit, q }: PageQueryParams) {
   const params = new URLSearchParams({
@@ -18,11 +24,7 @@ export async function getBreeds({ page, limit, q }: PageQueryParams) {
   }
 
   const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status code ${response.status} ${response.statusText}`);
-  }
-
+  assertOkResponse(response);
   const data = await response.json();
 
   return {
@@ -35,4 +37,11 @@ export async function getBreeds({ page, limit, q }: PageQueryParams) {
           limit: response.headers.get('pagination-limit'),
         }),
   };
+}
+
+export async function getImage(imageId: string) {
+  const response = await fetch(`${BASE_URL}/images/${imageId}`);
+  assertOkResponse(response);
+  const data = await response.json();
+  return imageSchema.parse(data);
 }

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { PAGE_SIZES } from './constants';
-import { closestNumber } from './utils';
 
 function sizeFromHeight(height: number): 'Small' | 'Medium' | 'Large' {
   if (height < 25) {
@@ -44,14 +43,31 @@ const breedSchema = z
       .string()
       .optional()
       .transform((origin) => (origin || 'Unknown').split(', ')),
+    reference_image_id: z.string(),
   })
-  .transform(({ life_span: lifeSpan, ...breed }) => ({
+  .transform(({ life_span: lifeSpan, reference_image_id: imageId, ...breed }) => ({
     ...breed,
     lifeSpan,
+    imageId,
   }));
 export type Breed = z.infer<typeof breedSchema>;
 
 export const breedArraySchema = z.array(breedSchema);
+
+export const imageSchema = z.object({
+  id: z.string(),
+  url: z.string(),
+  breeds: breedArraySchema.nonempty(),
+  width: z.number(),
+  height: z.number(),
+});
+export type Image = z.infer<typeof imageSchema>;
+
+function closestNumber(target: number, values: number[]) {
+  return values.reduce((prev, curr) => {
+    return Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev;
+  });
+}
 
 export const pageQueryParamsSchema = z.object({
   page: z.coerce
@@ -102,3 +118,7 @@ export const paginationSchema = z.object({
   limit: z.coerce.number(),
 });
 export type Pagination = z.infer<typeof paginationSchema>;
+
+export const idParamsSchema = z.object({
+  id: z.string(),
+});

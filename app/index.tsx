@@ -7,6 +7,7 @@ import DataTablePagination from '@/components/DataTablePagination';
 import { transformBreeds } from '@/lib/utils';
 import DataTableTitle from '@/components/DataTableTitle';
 import FilterChips from '@/components/FilterChips';
+import { router } from 'expo-router';
 
 export default function Index() {
   const params = searchParamsSchema.parse(useLocalSearchParams());
@@ -15,7 +16,7 @@ export default function Index() {
 
   if (isLoading) return <ActivityIndicator animating={true} />;
   if (error) return <Text>Error: {error.message}</Text>;
-  if (!data) return <Text>Data is undefined</Text>;
+  if (!data) return <Text>No breed found</Text>;
 
   return (
     <ScrollView>
@@ -26,7 +27,7 @@ export default function Index() {
           <DataTableTitle title="Size" />
         </DataTable.Header>
         {breeds.map((breed) => (
-          <DataTable.Row key={breed.id}>
+          <DataTable.Row key={breed.id} onPress={() => router.push(`/${breed.imageId}`)}>
             <DataTable.Cell style={{ justifyContent: 'center' }}>{breed.name}</DataTable.Cell>
             <DataTable.Cell style={{ justifyContent: 'center' }}>
               {breed.height.metric}
