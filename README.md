@@ -1,8 +1,12 @@
-# Welcome to your Expo app 👋
+# DoggyDogWorld 🐶
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<img src="docs/index-light.jpg" width="200" alt="Light themed home screen"/> <img src="docs/details-light.jpg" width="200" alt="Light themed breed details screen"/> <img src="docs/index-dark.jpg" width="200" alt="Dark themed home screen"/> <img src="docs/details-dark.jpg" width="200" alt="Dark themed breed details screen"/>
+
+A cross-platform React Native application using Expo that runs on Android, iOS, and web, allowing users to search, filter, sort, and learn about dog breeds using [The Dog API](https://thedogapi.com).
 
 ## Get started
+
+Before you begin, make sure you have [Node.js](https://nodejs.org/en) (v18 or newer recommended) installed and set up your development environment by following the [Expo environment setup guide](https://docs.expo.dev/get-started/set-up-your-environment/).
 
 1. Install dependencies
 
@@ -13,38 +17,64 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 2. Start the app
 
    ```bash
-    npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+   In the output, you'll find options to open the app in a:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   - browser
+   - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+   - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+   - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+   - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+   Alternatively, you can launch the app directly on one of the supported platforms:
 
-## Get a fresh project
+   ```bash
+   npm run android
+   npm run ios
+   npm run web
+   ```
 
-When you're ready, run:
+### Running tests
+
+The project uses Jest and React Native Testing Library for unit testing. To run all tests:
 
 ```bash
-npm run reset-project
+npm test
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Features and design decisions
 
-## Learn more
+- **Server-side pagination** and **searching**
+- **Detailed view** of dog breeds to display additional information
+- Extending the API capabilities with on-page features:
+  - Dynamic filter options derived from the union of the current page's data
+  - **Filtering** based on breed size and country of origin
+  - **Sorting and ordering** based on breed name and size
+  - Offline searching
+- **Material Design 3** with **dark mode** support using React Native Paper UI library
+- Using React Native's built-in Animated API for **smooth transitions** between states and **skeleton loaders** while fetching data
+- **URL parameters for state management**
+  - Centralized state that can be accessed across components
+  - Shareable and persistent application state on the web through URLs
+  - Simplified state management using hooks and helper functions provided by Expo Router
+- **React Query** for data fetching that offers efficient server-state management with built-in caching mechanisms
+- **Offline support with Async Storage:** persisting the current page between sessions and providing visual indicators when displaying cached data
+- **Zod schema validation** for type safety to ensures data integrity throughout the application and catch bugs early
+  - Parsing and validating all external data source such as API responses and URL parameters
+  - Transformation capabilities for data normalization in a single step
+- Excessive **error handling** with banners, toasts, and error screens
+- Modular architecture with **reusable components** and **custom hooks** to encapsulate complex logic, and a separate **service layer for API requests**
 
-To learn more about developing your project with Expo, look at the following resources:
+## Project structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `app` - [file-based routing](https://docs.expo.dev/develop/file-based-routing/)
+- `components` - React components
+- `lib` - core utilities and helper functions
+  - `api.ts` - API service layer
+  - `hooks.ts` - React hooks
+  - `storage.ts` - Async Storage utilities
+  - `breed-schemas.ts` - schemas for API response validation
+  - `params-schemas.ts` - schemas for query parameter validation
+- `__tests__` - unit tests
