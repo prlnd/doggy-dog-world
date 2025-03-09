@@ -11,7 +11,7 @@ type Props = {
 
 export default function FilterChips({ breeds }: Props) {
   const { size, origin } = transformParamsSchema.parse(useLocalSearchParams());
-  const filters = getFilters(breeds);
+  const filters = getFilters(breeds, { size, origin });
 
   return (
     <View style={styles.container}>

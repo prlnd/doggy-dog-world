@@ -1,10 +1,10 @@
 import type { Breed } from '../schemas/breeds';
 import type { TransformParams } from '../schemas/params';
 
-export function getFilters(breeds: Breed[]) {
+export function getFilters(breeds: Breed[], activeFilters: { size: string[]; origin: string[] }) {
   return {
-    sizes: new Set(breeds.map((breed) => breed.height.size)),
-    origins: new Set(breeds.flatMap((breed) => breed.origin)),
+    sizes: new Set(breeds.map<string>((breed) => breed.height.size).concat(activeFilters.size)),
+    origins: new Set(breeds.flatMap((breed) => breed.origin).concat(activeFilters.origin)),
   };
 }
 
