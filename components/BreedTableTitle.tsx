@@ -6,7 +6,7 @@ type Props = {
   title: SortBy;
 };
 
-export default function DataTableTitle({ title }: Props) {
+export default function BreedTableTitle({ title }: Props) {
   const { sortBy, order } = transformParamsSchema.parse(useLocalSearchParams());
 
   return (

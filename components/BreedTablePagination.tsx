@@ -3,7 +3,7 @@ import type { Pagination } from '@/schemas/params';
 import { router } from 'expo-router';
 import { DataTable } from 'react-native-paper';
 
-export default function DataTablePagination({ current, count, limit }: Pagination) {
+export default function BreedTablePagination({ current, count, limit }: Pagination) {
   const from = current * limit;
   const to = Math.min((current + 1) * limit, count);
   const total = Math.ceil(count / limit);
