@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBreeds, getImage } from './api';
 import { useCallback, useRef, useState, useEffect, useContext } from 'react';
-import type { PageQueryParams } from '@/schemas/params';
+import type { PageQueryParams } from '@/lib/params-schemas';
 import { Animated, Easing } from 'react-native';
 import { getLocalBreeds, setLocalBreeds } from './storage';
 import { ThemeContext } from '@/components/ThemeProvider';

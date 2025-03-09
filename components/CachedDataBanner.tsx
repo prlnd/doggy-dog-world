@@ -1,7 +1,7 @@
 import { Banner } from 'react-native-paper';
 import { clearLocalBreeds } from '@/lib/storage';
 import { useLocalSearchParams } from 'expo-router';
-import { pageQueryParamsSchema } from '@/schemas/params';
+import { pageQueryParamsSchema } from '@/lib/params-schemas';
 import { useBreedInvalidation } from '@/lib/hooks';
 
 type CachedDataBannerProps = {

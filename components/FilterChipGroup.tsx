@@ -1,7 +1,7 @@
 import { Text, useTheme } from 'react-native-paper';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
-import type { Breed } from '@/schemas/breeds';
-import { transformParamsSchema } from '@/schemas/params';
+import type { Breed } from '@/lib/breed-schemas';
+import { transformParamsSchema } from '@/lib/params-schemas';
 import { useLocalSearchParams } from 'expo-router';
 import { getFilters } from '@/lib/utils';
 import FilterChip from './FilterChip';

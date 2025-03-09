@@ -1,5 +1,5 @@
 import { PAGE_SIZES } from '@/lib/constants';
-import type { Pagination } from '@/schemas/params';
+import type { Pagination } from '@/lib/params-schemas';
 import { router } from 'expo-router';
 import { DataTable } from 'react-native-paper';
 

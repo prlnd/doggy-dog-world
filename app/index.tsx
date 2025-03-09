@@ -1,7 +1,7 @@
 import { ScrollView } from 'react-native';
 import { DataTable } from 'react-native-paper';
 import { useFetchBreeds } from '@/lib/hooks';
-import { searchParamsSchema } from '@/schemas/params';
+import { searchParamsSchema } from '@/lib/params-schemas';
 import { useLocalSearchParams } from 'expo-router';
 import BreedTablePagination from '@/components/BreedTablePagination';
 import { searchBreedsLocally, transformBreeds } from '@/lib/utils';

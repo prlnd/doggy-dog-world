@@ -1,5 +1,5 @@
-import { type PageQueryParams, paginationSchema } from '@/schemas/params';
-import { breedArraySchema, breedImageSchema } from '@/schemas/breeds';
+import { type PageQueryParams, paginationSchema } from '@/lib/params-schemas';
+import { breedArraySchema, breedImageSchema } from '@/lib/breed-schemas';
 
 const BASE_URL = 'https://api.thedogapi.com/v1';
 

@@ -1,4 +1,4 @@
-import type { Breed } from '@/schemas/breeds';
+import type { Breed } from '@/lib/breed-schemas';
 import { router } from 'expo-router';
 import { DataTable } from 'react-native-paper';
 

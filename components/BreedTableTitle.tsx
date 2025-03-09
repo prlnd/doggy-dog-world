@@ -1,4 +1,4 @@
-import { type SortBy, transformParamsSchema } from '@/schemas/params';
+import { type SortBy, transformParamsSchema } from '@/lib/params-schemas';
 import { router, useLocalSearchParams } from 'expo-router';
 import { DataTable } from 'react-native-paper';
 

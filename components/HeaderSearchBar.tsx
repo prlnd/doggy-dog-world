@@ -4,7 +4,7 @@ import { Appbar, useTheme } from 'react-native-paper';
 import SearchInput from './SearchInput';
 import { useAppTheme } from '@/lib/hooks';
 import { router, useGlobalSearchParams } from 'expo-router';
-import { pageQueryParamsSchema } from '@/schemas/params';
+import { pageQueryParamsSchema } from '@/lib/params-schemas';
 
 type HeaderSearchBarProps = {
   showBackAction?: boolean;

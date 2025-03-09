@@ -1,5 +1,5 @@
 import FilterChipGroup from '@/components/FilterChipGroup';
-import { Breed } from '@/schemas/breeds';
+import { Breed } from '@/lib/breed-schemas';
 import { userEvent } from '@testing-library/react-native';
 import { renderRouter, screen } from 'expo-router/testing-library';
 

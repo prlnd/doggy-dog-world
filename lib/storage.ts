@@ -1,4 +1,4 @@
-import type { Breed } from '@/schemas/breeds';
+import type { Breed } from '@/lib/breed-schemas';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function getLocalBreeds(): Promise<Breed[] | null> {

@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { Card, List } from 'react-native-paper';
 import { useFetchImage } from '@/lib/hooks';
-import { idParamsSchema } from '@/schemas/params';
+import { idParamsSchema } from '@/lib/params-schemas';
 import { useLocalSearchParams } from 'expo-router';
 import ErrorView from '@/components/ErrorView';
 import SkeletonBreedDetails from '@/components/SkeletonBreedDetails';
