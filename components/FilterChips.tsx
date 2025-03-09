@@ -1,6 +1,7 @@
 import { Chip, Text } from 'react-native-paper';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { transformParamsSchema, type Breed } from '@/lib/schemas';
+import type { Breed } from '@/schemas/breeds';
+import { transformParamsSchema } from '@/schemas/params';
 import { router, useLocalSearchParams } from 'expo-router';
 import { getFilters } from '@/lib/utils';
 

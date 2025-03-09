@@ -1,16 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 import { getBreeds, getImage } from './api';
-import { type PageQueryParams } from './schemas';
 import { useCallback, useRef, useState, useEffect } from 'react';
+import type { PageQueryParams } from '@/schemas/params';
 
 function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
   const debounceTimeout = useRef<NodeJS.Timeout>();
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       clearTimeout(debounceTimeout.current);
     };
-  }, [callback, delay]);
+  }, []);
 
   const debouncedCallback = useCallback(
     (...args: Parameters<T>) => {

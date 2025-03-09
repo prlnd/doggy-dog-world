@@ -1,4 +1,5 @@
-import type { Breed, TransformParams } from './schemas';
+import type { Breed } from '../schemas/breeds';
+import type { TransformParams } from '../schemas/params';
 
 export function getFilters(breeds: Breed[]) {
   return {

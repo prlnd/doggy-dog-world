@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { ActivityIndicator, Card, List, Text } from 'react-native-paper';
 import { useFetchImage } from '@/lib/hooks';
-import { idParamsSchema } from '@/lib/schemas';
+import { idParamsSchema } from '@/schemas/params';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function BreedDetails() {

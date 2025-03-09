@@ -1,5 +1,5 @@
 import { useGlobalSearchParams } from 'expo-router';
-import { pageQueryParamsSchema } from '@/lib/schemas';
+import { pageQueryParamsSchema } from '@/schemas/params';
 import { useRouter } from 'expo-router';
 import { Searchbar } from 'react-native-paper';
 import { useSearchFilter } from '@/lib/hooks';

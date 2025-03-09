@@ -1,5 +1,5 @@
-import type { PageQueryParams } from './schemas';
-import { breedArraySchema, imageSchema, paginationSchema } from './schemas';
+import { type PageQueryParams, paginationSchema } from '../schemas/params';
+import { breedArraySchema, breedImageSchema } from '../schemas/breeds';
 
 const BASE_URL = 'https://api.thedogapi.com/v1';
 
@@ -43,5 +43,5 @@ export async function getImage(imageId: string) {
   const response = await fetch(`${BASE_URL}/images/${imageId}`);
   assertOkResponse(response);
   const data = await response.json();
-  return imageSchema.parse(data);
+  return breedImageSchema.parse(data);
 }
