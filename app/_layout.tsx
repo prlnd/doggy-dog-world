@@ -1,33 +1,45 @@
 import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StyleSheet, View, SafeAreaView } from 'react-native';
-import SearchInput from '@/components/SearchInput';
+import { SafeAreaView, Platform } from 'react-native';
+import HeaderSearchBar from '@/components/HeaderSearchBar';
 
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
+  const router = useRouter();
+
   return (
     <QueryClientProvider client={queryClient}>
       <PaperProvider theme={DefaultTheme}>
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: DefaultTheme.colors.background }}>
           <Stack
-            screenOptions={{
-              header: () => (
-                <View style={styles.header}>
-                  <SearchInput placeholder="Search dog breeds" />
-                </View>
+            screenOptions={({ route }) => ({
+              header: ({ options, back }) => (
+                <HeaderSearchBar
+                  showBackAction={!!back}
+                  onBackPress={() => router.back()}
+                  title={options.title || 'Doggy Dog World'}
+                  showSearch={route.name === 'index'}
+                />
               ),
-              animation: 'slide_from_right',
-              animationDuration: 150,
-            }}>
-            <Stack.Screen name="index" options={{ title: 'Breeds' }} />
+              animation: Platform.OS === 'ios' ? 'default' : 'fade_from_bottom',
+              animationDuration: 200,
+              contentStyle: { backgroundColor: DefaultTheme.colors.background },
+              headerShown: true,
+              // Preserve state of screens in the stack
+              presentation: 'card',
+            })}>
+            <Stack.Screen
+              name="index"
+              options={{
+                title: 'Dog Breeds',
+              }}
+            />
             <Stack.Screen
               name="[id]"
               options={{
                 title: 'Breed Details',
-                headerShown: true,
-                header: undefined,
               }}
             />
           </Stack>
@@ -36,15 +48,3 @@ export default function RootLayout() {
     </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    backgroundColor: '#fff',
-  },
-  searchbar: {
-    elevation: 0,
-    backgroundColor: '#f0f0f0',
-  },
-});
