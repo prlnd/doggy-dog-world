@@ -1,8 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBreeds, getImage } from './api';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import type { PageQueryParams } from '@/schemas/params';
 import { Animated, Easing } from 'react-native';
+import { getLocalBreeds, setLocalBreeds } from './storage';
 
 function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
   const debounceTimeout = useRef<NodeJS.Timeout>();
@@ -49,15 +50,43 @@ export function useSearchFilter(
 export function useFetchBreeds({ page, limit, q }: PageQueryParams) {
   return useQuery({
     queryKey: ['breeds', page, limit, q],
-    queryFn: () => getBreeds({ page, limit, q }),
+    queryFn: async () => {
+      try {
+        const data = await getBreeds({ page, limit, q });
+        if (data.breeds.length) {
+          await setLocalBreeds(data.breeds);
+        }
+        return {
+          ...data,
+          isLocal: false,
+          networkError: undefined,
+        };
+      } catch (error) {
+        const breeds = await getLocalBreeds();
+        if (!breeds) throw error;
+        return {
+          breeds,
+          pagination: undefined,
+          isLocal: true,
+          networkError: error,
+        };
+      }
+    },
   });
 }
 
-export function useFetchImage(imageId?: string) {
+export function useBreedInvalidation({ page, limit, q }: PageQueryParams) {
+  const queryClient = useQueryClient();
+  return () =>
+    queryClient.invalidateQueries({
+      queryKey: ['breeds', page, limit, q],
+    });
+}
+
+export function useFetchImage(imageId: string) {
   return useQuery({
     queryKey: ['image', imageId],
-    queryFn: () => (imageId ? getImage(imageId) : null),
-    enabled: !!imageId,
+    queryFn: () => getImage(imageId),
   });
 }
 

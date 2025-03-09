@@ -23,3 +23,9 @@ export function transformBreeds(breeds: Breed[], { sortBy, order, size, origin }
       return sign * result;
     });
 }
+
+export function searchBreedsLocally(breeds: Breed[], query: string) {
+  return breeds.filter((breed) =>
+    breed.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+  );
+}
