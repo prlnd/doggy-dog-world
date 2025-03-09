@@ -20,7 +20,7 @@ export default function BreedDetails() {
       <Card style={styles.card}>
         <Card.Title title={breed.name} />
         <Card.Cover source={{ uri: data.url }} style={styles.image} resizeMode="contain" />
-        <Card.Content>
+        <Card.Content style={styles.cardContent}>
           <List.Section>
             <List.Accordion title="Physical Characteristics">
               <List.Item title="Height" description={`${breed.height.metric} cm`} />
@@ -46,10 +46,20 @@ export default function BreedDetails() {
 
 const styles = StyleSheet.create({
   card: {
-    margin: 16,
+    marginVertical: 16,
+    marginHorizontal: 'auto',
+    alignSelf: 'center',
+    width: '90%',
+    maxWidth: 500,
+    overflow: 'hidden',
   },
   image: {
     height: 300,
     backgroundColor: '#fff',
+    width: '100%',
+    margin: 0,
+  },
+  cardContent: {
+    paddingTop: 16,
   },
 });

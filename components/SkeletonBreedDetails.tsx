@@ -14,7 +14,7 @@ export default function SkeletonBreedDetails() {
 
         <Animated.View style={[styles.skeleton, styles.image, { opacity }]} />
 
-        <Card.Content>
+        <Card.Content style={styles.cardContent}>
           <List.Section>
             <List.Accordion
               title={<Animated.View style={[styles.skeleton, styles.sectionTitle, { opacity }]} />}
@@ -69,7 +69,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   card: {
-    margin: 16,
+    marginVertical: 16,
+    marginHorizontal: 'auto',
+    alignSelf: 'center',
+    width: '90%',
+    maxWidth: 500,
+    overflow: 'hidden',
   },
   skeleton: {
     backgroundColor: '#e0e0e0',
@@ -82,7 +87,8 @@ const styles = StyleSheet.create({
   image: {
     height: 300,
     backgroundColor: '#e0e0e0',
-    marginBottom: 16,
+    width: '100%',
+    margin: 0,
   },
   sectionTitle: {
     width: 180,
@@ -96,5 +102,8 @@ const styles = StyleSheet.create({
     width: 120,
     height: 16,
     marginTop: 4,
+  },
+  cardContent: {
+    paddingTop: 16,
   },
 });
