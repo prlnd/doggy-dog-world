@@ -38,13 +38,15 @@ const breedSchema = z
     height: heightSchema,
     id: z.number(),
     name: z.string(),
-    country_code: z.string().default('Unknown'),
     temperament: z.string().optional(),
     life_span: z.string(),
+    origin: z
+      .string()
+      .optional()
+      .transform((origin) => (origin || 'Unknown').split(', ')),
   })
-  .transform(({ country_code: countryCode, life_span: lifeSpan, ...breed }) => ({
+  .transform(({ life_span: lifeSpan, ...breed }) => ({
     ...breed,
-    countryCode,
     lifeSpan,
   }));
 export type Breed = z.infer<typeof breedSchema>;
@@ -74,8 +76,21 @@ export const transformParamsSchema = z
   .object({
     'sort-by': sortBySchema,
     order: orderSchema,
+    size: z
+      .string()
+      .or(z.string().array())
+      .default([])
+      .transform((size) => (Array.isArray(size) ? size : [size])),
+    origin: z
+      .string()
+      .or(z.string().array())
+      .default([])
+      .transform((origin) => (Array.isArray(origin) ? origin : [origin])),
   })
-  .transform(({ 'sort-by': sortBy, order }) => ({ sortBy, order }));
+  .transform(({ 'sort-by': sortBy, ...params }) => ({
+    ...params,
+    sortBy,
+  }));
 export type TransformParams = z.infer<typeof transformParamsSchema>;
 
 export const searchParamsSchema = pageQueryParamsSchema.and(transformParamsSchema);

@@ -5,7 +5,11 @@ import { Searchbar } from 'react-native-paper';
 import { useSearchFilter } from '@/lib/hooks';
 import { useCallback } from 'react';
 
-export default function SearchInput(props: { placeholder?: string }) {
+type Props = {
+  placeholder?: string;
+};
+
+export default function SearchInput(props: Props) {
   const router = useRouter();
   const { q } = pageQueryParamsSchema.parse(useGlobalSearchParams());
 

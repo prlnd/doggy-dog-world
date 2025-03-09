@@ -6,6 +6,7 @@ import { useLocalSearchParams } from 'expo-router';
 import DataTablePagination from '@/components/DataTablePagination';
 import { transformBreeds } from '@/lib/utils';
 import DataTableTitle from '@/components/DataTableTitle';
+import FilterChips from '@/components/FilterChips';
 
 export default function Index() {
   const params = searchParamsSchema.parse(useLocalSearchParams());
@@ -18,6 +19,7 @@ export default function Index() {
 
   return (
     <ScrollView>
+      {data && <FilterChips breeds={data.breeds} />}
       <DataTable>
         <DataTable.Header>
           <DataTableTitle title="Name" />
@@ -25,8 +27,10 @@ export default function Index() {
         </DataTable.Header>
         {breeds.map((breed) => (
           <DataTable.Row key={breed.id}>
-            <DataTable.Cell>{breed.name}</DataTable.Cell>
-            <DataTable.Cell>{breed.height.metric}</DataTable.Cell>
+            <DataTable.Cell style={{ justifyContent: 'center' }}>{breed.name}</DataTable.Cell>
+            <DataTable.Cell style={{ justifyContent: 'center' }}>
+              {breed.height.metric}
+            </DataTable.Cell>
           </DataTable.Row>
         ))}
         {data.pagination && <DataTablePagination {...data.pagination} />}
