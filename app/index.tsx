@@ -38,7 +38,7 @@ export default function Index() {
             <BreedTableTitle title="Size" />
           </DataTable.Header>
           {isLoadingOrFetching
-            ? Array.from({ length: 20 }, (_, index) => <SkeletonRow key={index} />)
+            ? Array.from({ length: params.limit }, (_, index) => <SkeletonRow key={index} />)
             : breeds.map((breed) => <BreedTableRow key={breed.id} breed={breed} />)}
           {data?.pagination && <BreedTablePagination {...data.pagination} />}
         </DataTable>

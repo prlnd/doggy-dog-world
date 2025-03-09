@@ -50,6 +50,8 @@ export function useSearchFilter(
 
 export function useFetchBreeds({ page, limit, q }: PageQueryParams) {
   return useQuery({
+    // Preserve previous state when fetching new data
+    placeholderData: (prev) => prev,
     queryKey: ['breeds', page, limit, q],
     queryFn: async () => {
       try {
