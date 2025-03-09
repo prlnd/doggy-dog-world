@@ -13,7 +13,7 @@ export default function ErrorView({ message, onRetry }: ErrorViewProps) {
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Card style={styles.card}>
         <Card.Content style={styles.content}>
-          <Icon source="alert-circle-outline" size={64} color={theme.colors.error} />
+          <Icon source="alert-circle-outline" size={64} color={theme.colors.primary} />
           <Text variant="titleLarge" style={[styles.title, { color: theme.colors.onSurface }]}>
             Something went wrong
           </Text>
@@ -22,7 +22,6 @@ export default function ErrorView({ message, onRetry }: ErrorViewProps) {
             <Button
               mode="contained"
               onPress={onRetry}
-              style={styles.button}
               icon="refresh"
               buttonColor={theme.colors.primary}
               textColor={theme.colors.onPrimary}>
@@ -50,18 +49,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
   },
-  icon: {
-    marginBottom: 16,
-  },
   title: {
     marginBottom: 8,
     fontWeight: 'bold',
   },
   message: {
-    marginBottom: 24,
+    marginBottom: 16,
     textAlign: 'center',
-  },
-  button: {
-    marginTop: 8,
   },
 });
