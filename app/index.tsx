@@ -1,6 +1,6 @@
 import { ScrollView } from 'react-native';
-import { Banner, DataTable, Text } from 'react-native-paper';
-import { useFetchBreeds, useBreedInvalidation } from '@/lib/hooks';
+import { DataTable } from 'react-native-paper';
+import { useFetchBreeds } from '@/lib/hooks';
 import { searchParamsSchema } from '@/schemas/params';
 import { useLocalSearchParams } from 'expo-router';
 import BreedTablePagination from '@/components/BreedTablePagination';
@@ -10,40 +10,26 @@ import FilterChips from '@/components/FilterChips';
 import SkeletonRow from '@/components/SkeletonRow';
 import SkeletonChips from '@/components/SkeletonChips';
 import BreedTableRow from '@/components/BreedTableRow';
-import { clearLocalBreeds } from '@/lib/storage';
+import ErrorView from '@/components/ErrorView';
+import NetworkErrorSnackbar from '@/components/NetworkErrorSnackbar';
+import CachedDataBanner from '@/components/CachedDataBanner';
 
 export default function Index() {
   const params = searchParamsSchema.parse(useLocalSearchParams());
-  const { data, isLoading, isFetching, error } = useFetchBreeds(params);
-  const invalidateCache = useBreedInvalidation(params);
+  const { data, isLoading, isFetching, error, refetch } = useFetchBreeds(params);
   const transformedBreeds = transformBreeds(data?.breeds || [], params);
   const breeds = data?.isLocal
     ? searchBreedsLocally(transformedBreeds, params.q)
     : transformedBreeds;
 
-  if (error) return <Text>Error: {error.message}</Text>;
-
   const isLoadingOrFetching = isLoading || isFetching;
+
+  if (error) return <ErrorView message={error.message} onRetry={refetch} />;
 
   return (
     <>
-      <Banner
-        visible={!isLoadingOrFetching && data?.isLocal === true}
-        actions={[
-          {
-            label: 'Remove cache',
-            onPress: () => {
-              clearLocalBreeds();
-              invalidateCache();
-            },
-          },
-          {
-            label: 'Retry',
-            onPress: invalidateCache,
-          },
-        ]}>
-        You're viewing cached data. Please check your internet connection.
-      </Banner>
+      <CachedDataBanner visible={!isLoadingOrFetching && data?.isLocal === true} />
+
       <ScrollView>
         {isLoadingOrFetching ? <SkeletonChips /> : data && <FilterChips breeds={data.breeds} />}
         <DataTable>
@@ -57,6 +43,13 @@ export default function Index() {
           {data?.pagination && <BreedTablePagination {...data.pagination} />}
         </DataTable>
       </ScrollView>
+
+      {data?.networkError && (
+        <NetworkErrorSnackbar
+          networkError={data.networkError}
+          visible={!isLoadingOrFetching && data?.isLocal === true}
+        />
+      )}
     </>
   );
 }

@@ -1,16 +1,16 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import { ActivityIndicator, Card, List, Text } from 'react-native-paper';
+import { ActivityIndicator, Card, List } from 'react-native-paper';
 import { useFetchImage } from '@/lib/hooks';
 import { idParamsSchema } from '@/schemas/params';
 import { useLocalSearchParams } from 'expo-router';
+import ErrorView from '@/components/ErrorView';
 
 export default function BreedDetails() {
   const { id } = idParamsSchema.parse(useLocalSearchParams());
-  const { data, isLoading, error } = useFetchImage(id);
+  const { data, isLoading, error, refetch } = useFetchImage(id);
 
-  if (isLoading) return <ActivityIndicator animating={true} />;
-  if (error) return <Text>Error: {error.message}</Text>;
-  if (!data) return <Text>Breed not found</Text>;
+  if (error) return <ErrorView message={error.message} onRetry={refetch} />;
+  if (isLoading || !data) return <ActivityIndicator animating={true} style={styles.loader} />;
 
   const [breed] = data.breeds;
 
@@ -50,5 +50,12 @@ const styles = StyleSheet.create({
   image: {
     height: 300,
     backgroundColor: '#fff',
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    marginTop: 20,
   },
 });
