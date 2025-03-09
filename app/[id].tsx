@@ -1,16 +1,17 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import { ActivityIndicator, Card, List } from 'react-native-paper';
+import { Card, List } from 'react-native-paper';
 import { useFetchImage } from '@/lib/hooks';
 import { idParamsSchema } from '@/schemas/params';
 import { useLocalSearchParams } from 'expo-router';
 import ErrorView from '@/components/ErrorView';
+import SkeletonBreedDetails from '@/components/SkeletonBreedDetails';
 
 export default function BreedDetails() {
   const { id } = idParamsSchema.parse(useLocalSearchParams());
   const { data, isLoading, error, refetch } = useFetchImage(id);
 
   if (error) return <ErrorView message={error.message} onRetry={refetch} />;
-  if (isLoading || !data) return <ActivityIndicator animating={true} style={styles.loader} />;
+  if (isLoading || !data) return <SkeletonBreedDetails />;
 
   const [breed] = data.breeds;
 
@@ -50,12 +51,5 @@ const styles = StyleSheet.create({
   image: {
     height: 300,
     backgroundColor: '#fff',
-  },
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    marginTop: 20,
   },
 });
