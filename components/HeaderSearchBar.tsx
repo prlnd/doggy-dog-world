@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Animated } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import SearchInput from './SearchInput';
 
@@ -18,30 +18,57 @@ export default function HeaderSearchBar({
 }: HeaderSearchBarProps) {
   const [searchVisible, setSearchVisible] = useState(false);
   const theme = useTheme();
+  const [animatedValue] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    Animated.timing(animatedValue, {
+      toValue: searchVisible ? 1 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start();
+  }, [searchVisible, animatedValue]);
 
   const handleSearchToggle = () => {
     setSearchVisible(!searchVisible);
   };
 
+  const searchWidth = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', '100%'],
+  });
+
+  const searchOpacity = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
+
   return (
-    <Appbar.Header style={styles.header} elevated>
-      {showBackAction && <Appbar.BackAction onPress={onBackPress} color={theme.colors.onSurface} />}
+    <Appbar.Header style={[styles.header, { backgroundColor: theme.colors.primary }]} elevated>
+      {showBackAction && <Appbar.BackAction onPress={onBackPress} color="#fff" />}
 
       {(!searchVisible || !showSearch) && (
-        <Appbar.Content title={title} titleStyle={styles.title} />
+        <Appbar.Content title={title} titleStyle={[styles.title, { color: '#fff' }]} />
       )}
 
-      {searchVisible && showSearch && (
-        <View style={styles.searchContainer}>
+      {showSearch && (
+        <Animated.View
+          style={[
+            styles.searchContainer,
+            {
+              width: searchWidth,
+              opacity: searchOpacity,
+              display: searchVisible ? 'flex' : 'none',
+            },
+          ]}>
           <SearchInput placeholder="Search dog breeds" />
-        </View>
+        </Animated.View>
       )}
 
       {showSearch && (
         <Appbar.Action
           icon={searchVisible ? 'close' : 'magnify'}
           onPress={handleSearchToggle}
-          color={theme.colors.onSurface}
+          color="#fff"
         />
       )}
     </Appbar.Header>
@@ -56,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 8,
     paddingRight: 8,
+    marginVertical: 6,
   },
   title: {
     fontWeight: '500',
