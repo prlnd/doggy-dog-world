@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getBreeds, getImage } from './api';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import type { PageQueryParams } from '@/schemas/params';
+import { Animated, Easing } from 'react-native';
 
 function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
   const debounceTimeout = useRef<NodeJS.Timeout>();
@@ -58,4 +59,29 @@ export function useFetchImage(imageId?: string) {
     queryFn: () => (imageId ? getImage(imageId) : null),
     enabled: !!imageId,
   });
+}
+
+export function useSkeletonOpacity() {
+  const [opacity] = useState(new Animated.Value(0.3));
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, {
+          toValue: 0.7,
+          duration: 500,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0.3,
+          duration: 500,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [opacity]);
+
+  return opacity;
 }

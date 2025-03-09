@@ -39,7 +39,7 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   header: {
-    paddingBottom: 10,
+    paddingVertical: 10,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
   },
