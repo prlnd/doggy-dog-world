@@ -1,5 +1,5 @@
 import { Banner } from 'react-native-paper';
-import { clearLocalBreeds } from '../lib/storage';
+import { clearLocalBreeds } from '@/lib/storage';
 import { useLocalSearchParams } from 'expo-router';
 import { pageQueryParamsSchema } from '@/schemas/params';
 import { useBreedInvalidation } from '@/lib/hooks';

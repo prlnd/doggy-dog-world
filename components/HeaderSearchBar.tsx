@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Animated } from 'react-native';
+import { StyleSheet, Animated, Platform } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import SearchInput from './SearchInput';
+import { useAppTheme } from '@/lib/hooks';
 
 type HeaderSearchBarProps = {
   showBackAction?: boolean;
@@ -18,7 +19,10 @@ export default function HeaderSearchBar({
 }: HeaderSearchBarProps) {
   const [searchVisible, setSearchVisible] = useState(false);
   const theme = useTheme();
+  const { isDarkMode, toggleTheme } = useAppTheme();
   const [animatedValue] = useState(new Animated.Value(0));
+
+  const headerTextColor = theme.dark ? '#000' : '#fff';
 
   useEffect(() => {
     Animated.timing(animatedValue, {
@@ -44,10 +48,18 @@ export default function HeaderSearchBar({
 
   return (
     <Appbar.Header style={[styles.header, { backgroundColor: theme.colors.primary }]} elevated>
-      {showBackAction && <Appbar.BackAction onPress={onBackPress} color="#fff" />}
+      {showBackAction && <Appbar.BackAction onPress={onBackPress} color={headerTextColor} />}
 
       {(!searchVisible || !showSearch) && (
-        <Appbar.Content title={title} titleStyle={[styles.title, { color: '#fff' }]} />
+        <Appbar.Content
+          title={title}
+          titleStyle={[
+            styles.title,
+            { color: headerTextColor },
+            Platform.OS === 'ios' && styles.iosTitle,
+            Platform.OS === 'ios' && !showBackAction && styles.iosTitleNoPadding,
+          ]}
+        />
       )}
 
       {showSearch && (
@@ -64,11 +76,17 @@ export default function HeaderSearchBar({
         </Animated.View>
       )}
 
+      <Appbar.Action
+        icon={isDarkMode ? 'weather-sunny' : 'weather-night'}
+        onPress={toggleTheme}
+        color={headerTextColor}
+      />
+
       {showSearch && (
         <Appbar.Action
           icon={searchVisible ? 'close' : 'magnify'}
           onPress={handleSearchToggle}
-          color="#fff"
+          color={headerTextColor}
         />
       )}
     </Appbar.Header>
@@ -87,5 +105,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: '500',
+  },
+  iosTitle: {
+    alignSelf: 'flex-start',
+    textAlign: 'left',
+  },
+  iosTitleNoPadding: {
+    paddingLeft: 16,
   },
 });

@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBreeds, getImage } from './api';
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect, useContext } from 'react';
 import type { PageQueryParams } from '@/schemas/params';
 import { Animated, Easing } from 'react-native';
 import { getLocalBreeds, setLocalBreeds } from './storage';
+import { ThemeContext } from '@/components/ThemeProvider';
 
 function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
   const debounceTimeout = useRef<NodeJS.Timeout>();
@@ -114,3 +115,11 @@ export function useSkeletonOpacity() {
 
   return opacity;
 }
+
+export const useAppTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useAppTheme must be used within a ThemeProvider');
+  }
+  return context;
+};

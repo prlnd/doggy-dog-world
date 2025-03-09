@@ -10,16 +10,22 @@ export default function ErrorView({ message, onRetry }: ErrorViewProps) {
   const theme = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Card style={styles.card}>
         <Card.Content style={styles.content}>
           <Icon source="alert-circle-outline" size={64} color={theme.colors.error} />
-          <Text variant="titleLarge" style={styles.title}>
+          <Text variant="titleLarge" style={[styles.title, { color: theme.colors.onSurface }]}>
             Something went wrong
           </Text>
-          <Text style={styles.message}>{message}</Text>
+          <Text style={[styles.message, { color: theme.colors.onSurfaceVariant }]}>{message}</Text>
           {onRetry && (
-            <Button mode="contained" onPress={onRetry} style={styles.button} icon="refresh">
+            <Button
+              mode="contained"
+              onPress={onRetry}
+              style={styles.button}
+              icon="refresh"
+              buttonColor={theme.colors.primary}
+              textColor={theme.colors.onPrimary}>
               Try Again
             </Button>
           )}

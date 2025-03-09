@@ -5,10 +5,12 @@ import { idParamsSchema } from '@/schemas/params';
 import { useLocalSearchParams } from 'expo-router';
 import ErrorView from '@/components/ErrorView';
 import SkeletonBreedDetails from '@/components/SkeletonBreedDetails';
+import { useAppTheme } from '@/lib/hooks';
 
 export default function BreedDetails() {
   const { id } = idParamsSchema.parse(useLocalSearchParams());
   const { data, isLoading, error, refetch } = useFetchImage(id);
+  const { theme } = useAppTheme();
 
   if (error) return <ErrorView message={error.message} onRetry={refetch} />;
   if (isLoading || !data) return <SkeletonBreedDetails />;
@@ -19,23 +21,50 @@ export default function BreedDetails() {
     <ScrollView>
       <Card style={styles.card}>
         <Card.Title title={breed.name} />
-        <Card.Cover source={{ uri: data.url }} style={styles.image} resizeMode="contain" />
+        <Card.Cover
+          source={{ uri: data.url }}
+          style={[
+            styles.image,
+            { backgroundColor: theme.dark ? theme.colors.surfaceVariant : '#fff' },
+          ]}
+          resizeMode="contain"
+        />
         <Card.Content style={styles.cardContent}>
           <List.Section>
             <List.Accordion title="Physical Characteristics">
-              <List.Item title="Height" description={`${breed.height.metric} cm`} />
-              <List.Item title="Weight" description={`${breed.weight.metric} kg`} />
-              <List.Item title="Life Span" description={breed.lifeSpan} />
+              <List.Item
+                title="Height"
+                description={`${breed.height.metric} cm`}
+                titleStyle={styles.listItemTitle}
+              />
+              <List.Item
+                title="Weight"
+                description={`${breed.weight.metric} kg`}
+                titleStyle={styles.listItemTitle}
+              />
+              <List.Item
+                title="Life Span"
+                description={breed.lifeSpan}
+                titleStyle={styles.listItemTitle}
+              />
             </List.Accordion>
 
             {breed.temperament && (
               <List.Accordion title="Temperament">
-                <List.Item title="Temperament" description={breed.temperament} />
+                <List.Item
+                  title="Characteristics"
+                  description={breed.temperament}
+                  titleStyle={styles.listItemTitle}
+                />
               </List.Accordion>
             )}
 
             <List.Accordion title="Origin">
-              <List.Item title="Origin" description={breed.origin.join(', ')} />
+              <List.Item
+                title="Country"
+                description={breed.origin.join(', ')}
+                titleStyle={styles.listItemTitle}
+              />
             </List.Accordion>
           </List.Section>
         </Card.Content>
@@ -49,17 +78,19 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     marginHorizontal: 'auto',
     alignSelf: 'center',
-    width: '90%',
+    width: '95%',
     maxWidth: 500,
     overflow: 'hidden',
   },
   image: {
     height: 300,
-    backgroundColor: '#fff',
-    width: '100%',
-    margin: 0,
+    width: '94%',
+    alignSelf: 'center',
   },
   cardContent: {
     paddingTop: 16,
+  },
+  listItemTitle: {
+    marginBottom: 4,
   },
 });

@@ -1,9 +1,13 @@
 import { ScrollView, StyleSheet, View, Animated } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSkeletonOpacity } from '@/lib/hooks';
+import { useAppTheme } from '@/lib/hooks';
 
 export default function SkeletonChips() {
   const opacity = useSkeletonOpacity();
+  const { theme } = useAppTheme();
+
+  const skeletonColor = theme.dark ? '#444444' : '#e0e0e0';
 
   const renderSkeletonChips = (widths: number[], containerStyle?: any) => (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
@@ -12,7 +16,7 @@ export default function SkeletonChips() {
           key={i}
           style={[
             styles.chip,
-            { width, opacity },
+            { width, opacity, backgroundColor: skeletonColor },
             i === 0 ? styles.firstChip : styles.regularChip,
             containerStyle,
           ]}
@@ -22,13 +26,13 @@ export default function SkeletonChips() {
   );
 
   return (
-    <View style={styles.container}>
-      <Text variant="titleSmall" style={styles.label}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text variant="titleSmall" style={[styles.label, { color: theme.colors.onSurface }]}>
         Size:
       </Text>
       {renderSkeletonChips([60, 70, 80])}
 
-      <Text variant="titleSmall" style={styles.label}>
+      <Text variant="titleSmall" style={[styles.label, { color: theme.colors.onSurface }]}>
         Country of origin:
       </Text>
       {renderSkeletonChips([90, 100, 70, 80])}
@@ -51,7 +55,6 @@ const styles = StyleSheet.create({
   chip: {
     height: 32,
     borderRadius: 8,
-    backgroundColor: '#e0e0e0',
     paddingHorizontal: 8,
   },
   regularChip: {

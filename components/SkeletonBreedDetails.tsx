@@ -1,59 +1,134 @@
 import { View, StyleSheet, Animated } from 'react-native';
 import { Card, List } from 'react-native-paper';
-import { useSkeletonOpacity } from '../lib/hooks';
+import { useSkeletonOpacity } from '@/lib/hooks';
+import { useAppTheme } from '@/lib/hooks';
 
 export default function SkeletonBreedDetails() {
   const opacity = useSkeletonOpacity();
+  const { theme } = useAppTheme();
+
+  const skeletonColor = theme.dark ? '#444444' : '#e0e0e0';
+  const imageBackgroundColor = theme.dark ? theme.colors.surfaceVariant : '#e0e0e0';
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Card style={styles.card}>
         <Card.Title
-          title={<Animated.View style={[styles.skeleton, styles.title, { opacity }]} />}
+          title={
+            <Animated.View
+              style={[styles.skeleton, styles.title, { opacity, backgroundColor: skeletonColor }]}
+            />
+          }
         />
 
-        <Animated.View style={[styles.skeleton, styles.image, { opacity }]} />
+        <Animated.View
+          style={[
+            styles.skeleton,
+            styles.image,
+            { opacity, backgroundColor: imageBackgroundColor },
+          ]}
+        />
 
         <Card.Content style={styles.cardContent}>
           <List.Section>
             <List.Accordion
-              title={<Animated.View style={[styles.skeleton, styles.sectionTitle, { opacity }]} />}
-              expanded={true}>
+              title={
+                <Animated.View
+                  style={[
+                    styles.skeleton,
+                    styles.sectionTitle,
+                    { opacity, backgroundColor: skeletonColor },
+                  ]}
+                />
+              }
+              expanded={false}>
               {[1, 2, 3].map((item) => (
                 <List.Item
                   key={item}
                   title={
-                    <Animated.View style={[styles.skeleton, styles.listItemTitle, { opacity }]} />
+                    <Animated.View
+                      style={[
+                        styles.skeleton,
+                        styles.listItemTitle,
+                        { opacity, backgroundColor: skeletonColor },
+                      ]}
+                    />
                   }
                   description={
-                    <Animated.View style={[styles.skeleton, styles.listItemDesc, { opacity }]} />
+                    <Animated.View
+                      style={[
+                        styles.skeleton,
+                        styles.listItemDesc,
+                        { opacity, backgroundColor: skeletonColor },
+                      ]}
+                    />
                   }
                 />
               ))}
             </List.Accordion>
 
             <List.Accordion
-              title={<Animated.View style={[styles.skeleton, styles.sectionTitle, { opacity }]} />}
+              title={
+                <Animated.View
+                  style={[
+                    styles.skeleton,
+                    styles.sectionTitle,
+                    { opacity, backgroundColor: skeletonColor },
+                  ]}
+                />
+              }
               expanded={false}>
               <List.Item
                 title={
-                  <Animated.View style={[styles.skeleton, styles.listItemTitle, { opacity }]} />
+                  <Animated.View
+                    style={[
+                      styles.skeleton,
+                      styles.listItemTitle,
+                      { opacity, backgroundColor: skeletonColor },
+                    ]}
+                  />
                 }
                 description={
-                  <Animated.View style={[styles.skeleton, styles.listItemDesc, { opacity }]} />
+                  <Animated.View
+                    style={[
+                      styles.skeleton,
+                      styles.listItemDesc,
+                      { opacity, backgroundColor: skeletonColor },
+                    ]}
+                  />
                 }
               />
             </List.Accordion>
 
             <List.Accordion
-              title={<Animated.View style={[styles.skeleton, styles.sectionTitle, { opacity }]} />}
+              title={
+                <Animated.View
+                  style={[
+                    styles.skeleton,
+                    styles.sectionTitle,
+                    { opacity, backgroundColor: skeletonColor },
+                  ]}
+                />
+              }
               expanded={false}>
               <List.Item
                 title={
-                  <Animated.View style={[styles.skeleton, styles.listItemTitle, { opacity }]} />
+                  <Animated.View
+                    style={[
+                      styles.skeleton,
+                      styles.listItemTitle,
+                      { opacity, backgroundColor: skeletonColor },
+                    ]}
+                  />
                 }
                 description={
-                  <Animated.View style={[styles.skeleton, styles.listItemDesc, { opacity }]} />
+                  <Animated.View
+                    style={[
+                      styles.skeleton,
+                      styles.listItemDesc,
+                      { opacity, backgroundColor: skeletonColor },
+                    ]}
+                  />
                 }
               />
             </List.Accordion>
@@ -77,7 +152,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   skeleton: {
-    backgroundColor: '#e0e0e0',
     borderRadius: 4,
   },
   title: {
@@ -86,7 +160,6 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 300,
-    backgroundColor: '#e0e0e0',
     width: '100%',
     margin: 0,
   },

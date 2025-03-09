@@ -1,4 +1,4 @@
-import { Chip, Text } from 'react-native-paper';
+import { Chip, Text, useTheme } from 'react-native-paper';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import type { Breed } from '@/schemas/breeds';
 import { transformParamsSchema } from '@/schemas/params';
@@ -12,10 +12,11 @@ type Props = {
 export default function FilterChips({ breeds }: Props) {
   const { size, origin } = transformParamsSchema.parse(useLocalSearchParams());
   const filters = getFilters(breeds, { size, origin });
+  const theme = useTheme();
 
   return (
-    <View style={styles.container}>
-      <Text variant="titleSmall" style={styles.label}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text variant="titleSmall" style={[styles.label, { color: theme.colors.onSurface }]}>
         Size:
       </Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
@@ -32,13 +33,14 @@ export default function FilterChips({ breeds }: Props) {
               }
             }}
             onLongPress={() => router.setParams({ size: [] })}
-            style={i === 0 ? styles.firstChip : styles.chip}>
+            style={i === 0 ? styles.firstChip : styles.chip}
+            selectedColor={theme.colors.primary}>
             {selectedSize}
           </Chip>
         ))}
       </ScrollView>
 
-      <Text variant="titleSmall" style={styles.label}>
+      <Text variant="titleSmall" style={[styles.label, { color: theme.colors.onSurface }]}>
         Country of origin:
       </Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollView}>
@@ -55,7 +57,8 @@ export default function FilterChips({ breeds }: Props) {
               }
             }}
             onLongPress={() => router.setParams({ origin: [] })}
-            style={i === 0 ? styles.firstChip : styles.chip}>
+            style={i === 0 ? styles.firstChip : styles.chip}
+            selectedColor={theme.colors.primary}>
             {selectedOrigin}
           </Chip>
         ))}
