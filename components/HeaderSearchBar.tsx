@@ -3,6 +3,7 @@ import { StyleSheet, Animated, Platform } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import SearchInput from './SearchInput';
 import { useAppTheme } from '@/lib/hooks';
+import { router } from 'expo-router';
 
 type HeaderSearchBarProps = {
   showBackAction?: boolean;
@@ -33,6 +34,9 @@ export default function HeaderSearchBar({
   }, [searchVisible, animatedValue]);
 
   const handleSearchToggle = () => {
+    if (searchVisible) {
+      router.setParams({ q: '' });
+    }
     setSearchVisible(!searchVisible);
   };
 
