@@ -30,17 +30,23 @@ const heightSchema = z
     };
   });
 
-const breedSchema = z.object({
-  weight: z.object({
-    metric: z.string(),
-  }),
-  height: heightSchema,
-  id: z.number(),
-  name: z.string(),
-  country_code: z.string().default('Unknown'),
-  temperament: z.string().optional(),
-  life_span: z.string(),
-});
+const breedSchema = z
+  .object({
+    weight: z.object({
+      metric: z.string(),
+    }),
+    height: heightSchema,
+    id: z.number(),
+    name: z.string(),
+    country_code: z.string().default('Unknown'),
+    temperament: z.string().optional(),
+    life_span: z.string(),
+  })
+  .transform(({ country_code: countryCode, life_span: lifeSpan, ...breed }) => ({
+    ...breed,
+    countryCode,
+    lifeSpan,
+  }));
 export type Breed = z.infer<typeof breedSchema>;
 
 export const breedArraySchema = z.array(breedSchema);
@@ -57,6 +63,23 @@ export const pageQueryParamsSchema = z.object({
   q: z.string().default(''),
 });
 export type PageQueryParams = z.infer<typeof pageQueryParamsSchema>;
+
+export const sortBySchema = z.enum(['Size', 'Name']).default('Size');
+export type SortBy = z.infer<typeof sortBySchema>;
+
+export const orderSchema = z.enum(['ascending', 'descending']).default('ascending');
+export type Order = z.infer<typeof orderSchema>;
+
+export const transformParamsSchema = z
+  .object({
+    'sort-by': sortBySchema,
+    order: orderSchema,
+  })
+  .transform(({ 'sort-by': sortBy, order }) => ({ sortBy, order }));
+export type TransformParams = z.infer<typeof transformParamsSchema>;
+
+export const searchParamsSchema = pageQueryParamsSchema.and(transformParamsSchema);
+export type SearchParams = z.infer<typeof searchParamsSchema>;
 
 export const paginationSchema = z.object({
   current: z.coerce.number(),
