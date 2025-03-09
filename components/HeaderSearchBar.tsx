@@ -3,7 +3,8 @@ import { StyleSheet, Animated, Platform } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import SearchInput from './SearchInput';
 import { useAppTheme } from '@/lib/hooks';
-import { router } from 'expo-router';
+import { router, useGlobalSearchParams } from 'expo-router';
+import { pageQueryParamsSchema } from '@/schemas/params';
 
 type HeaderSearchBarProps = {
   showBackAction?: boolean;
@@ -18,7 +19,8 @@ export default function HeaderSearchBar({
   title,
   showSearch = false,
 }: HeaderSearchBarProps) {
-  const [searchVisible, setSearchVisible] = useState(false);
+  const { q } = pageQueryParamsSchema.parse(useGlobalSearchParams());
+  const [isSearchVisible, setIsSearchVisible] = useState(q !== '');
   const theme = useTheme();
   const { isDarkMode, toggleTheme } = useAppTheme();
   const [animatedValue] = useState(new Animated.Value(0));
@@ -27,17 +29,17 @@ export default function HeaderSearchBar({
 
   useEffect(() => {
     Animated.timing(animatedValue, {
-      toValue: searchVisible ? 1 : 0,
+      toValue: isSearchVisible ? 1 : 0,
       duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [searchVisible, animatedValue]);
+  }, [isSearchVisible, animatedValue]);
 
   const handleSearchToggle = () => {
-    if (searchVisible) {
+    if (isSearchVisible) {
       router.setParams({ q: '' });
     }
-    setSearchVisible(!searchVisible);
+    setIsSearchVisible(!isSearchVisible);
   };
 
   const searchWidth = animatedValue.interpolate({
@@ -54,7 +56,7 @@ export default function HeaderSearchBar({
     <Appbar.Header style={[styles.header, { backgroundColor: theme.colors.primary }]} elevated>
       {showBackAction && <Appbar.BackAction onPress={onBackPress} color={headerTextColor} />}
 
-      {(!searchVisible || !showSearch) && (
+      {(!isSearchVisible || !showSearch) && (
         <Appbar.Content
           title={title}
           titleStyle={[
@@ -66,14 +68,13 @@ export default function HeaderSearchBar({
         />
       )}
 
-      {showSearch && (
+      {isSearchVisible && (
         <Animated.View
           style={[
             styles.searchContainer,
             {
               width: searchWidth,
               opacity: searchOpacity,
-              display: searchVisible ? 'flex' : 'none',
             },
           ]}>
           <SearchInput placeholder="Search dog breeds" />
@@ -88,7 +89,7 @@ export default function HeaderSearchBar({
 
       {showSearch && (
         <Appbar.Action
-          icon={searchVisible ? 'close' : 'magnify'}
+          icon={isSearchVisible ? 'close' : 'magnify'}
           onPress={handleSearchToggle}
           color={headerTextColor}
         />
