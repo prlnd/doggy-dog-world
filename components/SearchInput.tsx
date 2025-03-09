@@ -6,11 +6,11 @@ import { useSearchFilter } from '@/lib/hooks';
 import { useCallback, useEffect, useRef } from 'react';
 import { TextInput } from 'react-native';
 
-type Props = {
+type SearchInputProps = {
   placeholder?: string;
 };
 
-export default function SearchInput(props: Props) {
+export default function SearchInput(props: SearchInputProps) {
   const inputRef = useRef<TextInput>(null);
   const { q } = pageQueryParamsSchema.parse(useGlobalSearchParams());
 

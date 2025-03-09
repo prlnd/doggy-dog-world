@@ -6,11 +6,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { getFilters } from '@/lib/utils';
 import FilterChip from './FilterChip';
 
-type Props = {
+type FilterChipGroupProps = {
   breeds: Breed[];
 };
 
-export default function FilterChipGroup({ breeds }: Props) {
+export default function FilterChipGroup({ breeds }: FilterChipGroupProps) {
   const { size, origin } = transformParamsSchema.parse(useLocalSearchParams());
   const filters = getFilters(breeds, { size, origin });
   const theme = useTheme();

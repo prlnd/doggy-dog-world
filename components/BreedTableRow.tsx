@@ -2,11 +2,11 @@ import type { Breed } from '@/schemas/breeds';
 import { router } from 'expo-router';
 import { DataTable } from 'react-native-paper';
 
-type Props = {
+type BreedTableRowProps = {
   breed: Breed;
 };
 
-export default function BreedTableRow({ breed }: Props) {
+export default function BreedTableRow({ breed }: BreedTableRowProps) {
   return (
     <DataTable.Row key={breed.id} onPress={() => router.push(`/${breed.imageId}`)}>
       <DataTable.Cell style={{ justifyContent: 'center' }}>{breed.name}</DataTable.Cell>

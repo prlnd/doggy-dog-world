@@ -2,14 +2,14 @@ import { Chip, useTheme } from 'react-native-paper';
 import { router } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
-type Props = {
+type FilterChipProps = {
   title: string;
   filters: string[];
   param: string;
   index: number;
 };
 
-export default function FilterChip({ title, filters, param, index }: Props) {
+export default function FilterChip({ title, filters, param, index }: FilterChipProps) {
   const theme = useTheme();
 
   return (

@@ -2,11 +2,11 @@ import { type SortBy, transformParamsSchema } from '@/schemas/params';
 import { router, useLocalSearchParams } from 'expo-router';
 import { DataTable } from 'react-native-paper';
 
-type Props = {
+type BreedTableTitleProps = {
   title: SortBy;
 };
 
-export default function BreedTableTitle({ title }: Props) {
+export default function BreedTableTitle({ title }: BreedTableTitleProps) {
   const { sortBy, order } = transformParamsSchema.parse(useLocalSearchParams());
 
   return (
