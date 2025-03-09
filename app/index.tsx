@@ -10,10 +10,11 @@ import FilterChips from '@/components/FilterChips';
 import SkeletonRow from '@/components/SkeletonRow';
 import SkeletonChips from '@/components/SkeletonChips';
 import BreedTableRow from '@/components/BreedTableRow';
+import { clearLocalBreeds } from '@/lib/storage';
 
 export default function Index() {
   const params = searchParamsSchema.parse(useLocalSearchParams());
-  const { data, isLoading, error } = useFetchBreeds(params);
+  const { data, isLoading, isFetching, error } = useFetchBreeds(params);
   const invalidateCache = useBreedInvalidation(params);
   const transformedBreeds = transformBreeds(data?.breeds || [], params);
   const breeds = data?.isLocal
@@ -21,13 +22,21 @@ export default function Index() {
     : transformedBreeds;
 
   if (error) return <Text>Error: {error.message}</Text>;
-  if (!data && !isLoading) return <Text>No breed found</Text>;
+
+  const isLoadingOrFetching = isLoading || isFetching;
 
   return (
     <>
       <Banner
-        visible={data?.isLocal === true}
+        visible={!isLoadingOrFetching && data?.isLocal === true}
         actions={[
+          {
+            label: 'Remove cache',
+            onPress: () => {
+              clearLocalBreeds();
+              invalidateCache();
+            },
+          },
           {
             label: 'Retry',
             onPress: invalidateCache,
@@ -36,13 +45,13 @@ export default function Index() {
         You're viewing cached data. Please check your internet connection.
       </Banner>
       <ScrollView>
-        {isLoading ? <SkeletonChips /> : data && <FilterChips breeds={data.breeds} />}
+        {isLoadingOrFetching ? <SkeletonChips /> : data && <FilterChips breeds={data.breeds} />}
         <DataTable>
           <DataTable.Header>
             <BreedTableTitle title="Name" />
             <BreedTableTitle title="Size" />
           </DataTable.Header>
-          {isLoading
+          {isLoadingOrFetching
             ? Array.from({ length: 20 }, (_, index) => <SkeletonRow key={index} />)
             : breeds.map((breed) => <BreedTableRow key={breed.id} breed={breed} />)}
           {data?.pagination && <BreedTablePagination {...data.pagination} />}

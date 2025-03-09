@@ -9,3 +9,7 @@ export async function getLocalBreeds(): Promise<Breed[] | null> {
 export async function setLocalBreeds(breeds: Breed[]) {
   await AsyncStorage.setItem('breeds', JSON.stringify(breeds));
 }
+
+export async function clearLocalBreeds() {
+  await AsyncStorage.removeItem('breeds');
+}
