@@ -4,14 +4,15 @@ import { DataTable } from 'react-native-paper';
 
 type BreedTableTitleProps = {
   title: SortBy;
+  numeric?: boolean;
 };
 
-export default function BreedTableTitle({ title }: BreedTableTitleProps) {
+export default function BreedTableTitle({ title, numeric = false }: BreedTableTitleProps) {
   const { sortBy, order } = transformParamsSchema.parse(useLocalSearchParams());
 
   return (
     <DataTable.Title
-      style={{ justifyContent: 'center' }}
+      numeric={numeric}
       sortDirection={sortBy === title ? order : undefined}
       onPress={() => {
         router.setParams({

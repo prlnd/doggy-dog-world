@@ -34,8 +34,9 @@ export default function Index() {
         {isLoadingOrFetching ? <SkeletonChips /> : data && <FilterChipGroup breeds={data.breeds} />}
         <DataTable>
           <DataTable.Header>
+            <DataTable.Title>Image</DataTable.Title>
             <BreedTableTitle title="Name" />
-            <BreedTableTitle title="Size" />
+            <BreedTableTitle title="Size" numeric />
           </DataTable.Header>
           {isLoadingOrFetching
             ? Array.from({ length: params.limit }, (_, index) => <SkeletonRow key={index} />)
