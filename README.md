@@ -67,6 +67,10 @@ npm test
 - Excessive **error handling** with banners, toasts, and error screens
 - Modular architecture with **reusable components** and **custom hooks** to encapsulate complex logic, and a separate **service layer for API requests**
 
+## Notes
+
+- The implementation of dog breed images in the table is kept on the `table-images` branch because the table component does not support virtualization which led to performance issues on large page sizes
+
 ## Project structure
 
 - `app` - [file-based routing](https://docs.expo.dev/develop/file-based-routing/)
