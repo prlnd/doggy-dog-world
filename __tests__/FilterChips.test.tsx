@@ -1,4 +1,4 @@
-import FilterChips from '@/components/FilterChips';
+import FilterChipGroup from '@/components/FilterChipGroup';
 import { Breed } from '@/schemas/breeds';
 import { userEvent } from '@testing-library/react-native';
 import { renderRouter, screen } from 'expo-router/testing-library';
@@ -32,10 +32,10 @@ const mockBreeds: Breed[] = [
   },
 ];
 
-describe('FilterChips', () => {
+describe('FilterChipGroup', () => {
   it('should update size filter when clicking size chips', async () => {
     renderRouter({
-      index: () => <FilterChips breeds={mockBreeds} />,
+      index: () => <FilterChipGroup breeds={mockBreeds} />,
     });
 
     const smallChip = screen.getByRole('button', { name: 'Small' });
@@ -55,7 +55,7 @@ describe('FilterChips', () => {
 
   it('should update origin filter when clicking origin chips', async () => {
     renderRouter({
-      index: () => <FilterChips breeds={mockBreeds} />,
+      index: () => <FilterChipGroup breeds={mockBreeds} />,
     });
 
     const russiaChip = screen.getByRole('button', { name: 'Russia' });
@@ -76,7 +76,7 @@ describe('FilterChips', () => {
   it('should clear filters on long press', async () => {
     renderRouter(
       {
-        index: () => <FilterChips breeds={mockBreeds} />,
+        index: () => <FilterChipGroup breeds={mockBreeds} />,
       },
       { initialUrl: '/?size=Small&size=Large&origin=Russia&origin=Mexico' }
     );

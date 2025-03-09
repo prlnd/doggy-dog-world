@@ -6,7 +6,7 @@ import { useLocalSearchParams } from 'expo-router';
 import BreedTablePagination from '@/components/BreedTablePagination';
 import { searchBreedsLocally, transformBreeds } from '@/lib/utils';
 import BreedTableTitle from '@/components/BreedTableTitle';
-import FilterChips from '@/components/FilterChips';
+import FilterChipGroup from '@/components/FilterChipGroup';
 import SkeletonRow from '@/components/SkeletonRow';
 import SkeletonChips from '@/components/SkeletonChips';
 import BreedTableRow from '@/components/BreedTableRow';
@@ -31,7 +31,7 @@ export default function Index() {
       <CachedDataBanner visible={!isLoadingOrFetching && data?.isLocal === true} />
 
       <ScrollView>
-        {isLoadingOrFetching ? <SkeletonChips /> : data && <FilterChips breeds={data.breeds} />}
+        {isLoadingOrFetching ? <SkeletonChips /> : data && <FilterChipGroup breeds={data.breeds} />}
         <DataTable>
           <DataTable.Header>
             <BreedTableTitle title="Name" />
