@@ -27,10 +27,12 @@ export async function getBreeds({ page, limit, q }: PageQueryParams) {
 
   return {
     breeds: breedArraySchema.parse(data),
-    pagination: paginationSchema.parse({
-      current: response.headers.get('pagination-page'),
-      count: response.headers.get('pagination-count'),
-      limit: response.headers.get('pagination-limit'),
-    }),
+    pagination: q
+      ? undefined
+      : paginationSchema.parse({
+          current: response.headers.get('pagination-page'),
+          count: response.headers.get('pagination-count'),
+          limit: response.headers.get('pagination-limit'),
+        }),
   };
 }

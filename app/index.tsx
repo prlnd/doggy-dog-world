@@ -26,7 +26,7 @@ export default function Index() {
             <DataTable.Cell>{breed.height.size}</DataTable.Cell>
           </DataTable.Row>
         ))}
-        <DataTablePagination {...data.pagination} />
+        {data.pagination && <DataTablePagination {...data.pagination} />}
       </DataTable>
     </ScrollView>
   );
